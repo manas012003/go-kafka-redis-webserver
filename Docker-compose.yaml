@@ -1,0 +1,23 @@
+version: '3' # Docker Compose file format version
+services:
+  zookeeper: # Zookeeper service
+    image: wurstmeister/zookeeper # Docker image for Zookeeper
+    ports:
+      - "2181:2181" # Expose port 2181 for Zookeeper
+
+  kafka: # Kafka service
+    image: wurstmeister/kafka # Docker image for Kafka
+    ports:
+      - "9092:9092" # Expose port 9092 for Kafka
+    environment: # Environment variables for Kafka configuration
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 # Connection string for Zookeeper
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092 # Kafka listeners
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092 # Advertised listeners
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT # Listener security protocol map
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT # Inter-broker listener name
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # Offsets topic replication factor
+
+  redis: # Redis service
+    image: redis # Docker image for Redis
+    ports:
+      - "6379:6379" # Expose port 6379 for Redis
